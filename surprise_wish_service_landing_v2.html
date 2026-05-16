@@ -1,0 +1,1863 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#ff4f9a" />
+  <title>Surprise Wish Link | Birthday & Anniversary Webpage Service</title>
+  <meta name="description" content="Birthday, anniversary, love, apology and special occasion-er jonno personalized surprise webpage. Photo, message, music, QR and private link with WhatsApp order." />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg-1: #120817;
+      --bg-2: #24102f;
+      --pink: #ff4f9a;
+      --rose: #ff7ab6;
+      --hot: #ff2f7e;
+      --purple: #9b5cff;
+      --violet: #6d3df2;
+      --gold: #ffd166;
+      --mint: #66ffd1;
+      --green: #25D366;
+      --white: #ffffff;
+      --cream: #fff7fb;
+      --muted: rgba(255,255,255,.72);
+      --glass: rgba(255,255,255,.11);
+      --border: rgba(255,255,255,.20);
+      --shadow: 0 28px 90px rgba(0,0,0,.35);
+      --shadow-pink: 0 22px 70px rgba(255,79,154,.28);
+      --radius: 32px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      min-height: 100vh;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      color: var(--white);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(255, 79, 154, .26), transparent 34%),
+        radial-gradient(circle at 82% 12%, rgba(155, 92, 255, .26), transparent 32%),
+        radial-gradient(circle at 50% 85%, rgba(255, 209, 102, .14), transparent 35%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2) 50%, #14091d);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black, transparent 78%);
+      z-index: 0;
+    }
+
+    ::selection { background: var(--pink); color: white; }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      z-index: 1;
+    }
+
+    .page { position: relative; z-index: 2; }
+
+    .cursor-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(255,79,154,.23), transparent 65%);
+      transform: translate(-50%, -50%);
+      filter: blur(8px);
+      z-index: 1;
+      opacity: .8;
+    }
+
+    .floating-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .float-item {
+      position: absolute;
+      bottom: -60px;
+      opacity: .72;
+      animation: floatUp linear infinite;
+      filter: drop-shadow(0 10px 18px rgba(255,79,154,.16));
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0) rotate(0deg) scale(.8); opacity: 0; }
+      10% { opacity: .8; }
+      100% { transform: translateY(-115vh) rotate(360deg) scale(1.15); opacity: 0; }
+    }
+
+    .preloader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 50% 40%, rgba(255,79,154,.25), transparent 30%),
+        linear-gradient(135deg, #170a1d, #2a1238);
+      transition: .7s ease;
+    }
+
+    .preloader.hide { opacity: 0; pointer-events: none; }
+
+    .loader-card {
+      width: min(420px, calc(100% - 34px));
+      padding: 30px;
+      text-align: center;
+      border-radius: 30px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(20px);
+    }
+
+    .loader-heart {
+      font-size: 56px;
+      animation: heartbeat 1s ease-in-out infinite;
+      margin-bottom: 14px;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      35% { transform: scale(1.18); }
+      55% { transform: scale(.96); }
+    }
+
+    .loader-card h2 { font-size: 24px; margin-bottom: 10px; }
+    .loader-card p { color: var(--muted); line-height: 1.7; }
+
+    .nav {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 80;
+      width: min(1120px, calc(100% - 24px));
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      background: rgba(22, 8, 30, .54);
+      border: 1px solid rgba(255,255,255,.16);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.22);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 0 10px;
+      font-weight: 950;
+      letter-spacing: -.02em;
+      white-space: nowrap;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      box-shadow: 0 12px 26px rgba(255,79,154,.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-links::-webkit-scrollbar { display: none; }
+
+    .nav a {
+      text-decoration: none;
+      color: rgba(255,255,255,.78);
+      padding: 10px 13px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 850;
+      white-space: nowrap;
+      transition: .22s ease;
+    }
+
+    .nav a:hover, .nav a.active {
+      color: white;
+      background: rgba(255,255,255,.13);
+    }
+
+    .nav-order {
+      border: 0;
+      text-decoration: none;
+      color: white;
+      background: linear-gradient(135deg, var(--green), #13b957);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 950;
+      white-space: nowrap;
+      box-shadow: 0 12px 28px rgba(37,211,102,.20);
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 34px));
+      margin: 0 auto;
+    }
+
+    section { padding: 96px 0; position: relative; }
+
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      align-items: center;
+      padding-top: 92px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.08fr .92fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .hero-copy {
+      padding: 34px;
+      border-radius: 42px;
+      background: linear-gradient(135deg, rgba(255,255,255,.14), rgba(255,255,255,.07));
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+      position: relative;
+      overflow: hidden;
+      animation: fadeUp .9s ease both;
+    }
+
+    .hero-copy::after {
+      content: "";
+      position: absolute;
+      width: 280px;
+      height: 280px;
+      right: -120px;
+      top: -120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,209,102,.20), transparent 70%);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      color: #ffe7f2;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.16);
+      padding: 10px 15px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 950;
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      font-size: clamp(44px, 7vw, 92px);
+      line-height: .94;
+      letter-spacing: -.07em;
+      margin-bottom: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .gradient-text {
+      color: transparent;
+      background: linear-gradient(110deg, #fff, #ffd4e8 25%, var(--pink), var(--gold), #d9c7ff 80%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      background-size: 200% auto;
+      animation: shimmer 5s ease-in-out infinite;
+    }
+
+    @keyframes shimmer {
+      0%, 100% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+    }
+
+    .hero-subtitle {
+      font-size: clamp(17px, 2.2vw, 23px);
+      line-height: 1.75;
+      color: rgba(255,255,255,.82);
+      max-width: 720px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 13px; align-items: center; position: relative; z-index: 1; }
+
+    .btn {
+      border: 0;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 50px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      color: white;
+      background: linear-gradient(135deg, var(--pink), var(--purple));
+      font-weight: 950;
+      box-shadow: 0 18px 42px rgba(255,79,154,.25);
+      transition: .24s ease;
+    }
+
+    .btn:hover { transform: translateY(-3px); box-shadow: 0 24px 60px rgba(255,79,154,.36); }
+
+    .btn.secondary {
+      background: rgba(255,255,255,.11);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: none;
+    }
+
+    .btn.whatsapp {
+      background: linear-gradient(135deg, var(--green), #10ad55);
+      box-shadow: 0 18px 42px rgba(37,211,102,.25);
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 620px;
+      animation: fadeUp 1s ease .15s both;
+    }
+
+    .phone-card {
+      position: absolute;
+      inset: 36px 0 auto auto;
+      width: min(430px, 100%);
+      aspect-ratio: 9/16;
+      border-radius: 52px;
+      padding: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,.20), rgba(255,255,255,.07));
+      border: 1px solid rgba(255,255,255,.22);
+      box-shadow: var(--shadow-pink);
+      transform: rotate(3deg);
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+    }
+
+    .phone-screen {
+      width: 100%;
+      height: 100%;
+      border-radius: 40px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 10%, rgba(255,255,255,.28), transparent 24%),
+        linear-gradient(135deg, #ff8fc1, #b994ff 48%, #ffd166);
+      position: relative;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .phone-screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 20%, rgba(0,0,0,.56));
+      z-index: 1;
+    }
+
+    .mock-top, .mock-content, .mock-bottom { position: relative; z-index: 2; }
+
+    .mock-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 950;
+    }
+
+    .mock-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.20);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
+      font-weight: 950;
+    }
+
+    .mock-content {
+      text-align: center;
+      display: grid;
+      gap: 12px;
+      place-items: center;
+    }
+
+    .mock-heart { font-size: 52px; animation: heartbeat 1.2s ease-in-out infinite; }
+    .mock-content h2 { font-size: clamp(34px, 5vw, 54px); line-height: .98; letter-spacing: -.06em; }
+    .mock-content p { color: rgba(255,255,255,.82); line-height: 1.55; font-weight: 800; }
+
+    .mock-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 100%;
+    }
+
+    .mock-photo {
+      aspect-ratio: 1;
+      border-radius: 18px;
+      background: rgba(255,255,255,.22);
+      border: 1px solid rgba(255,255,255,.18);
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+    }
+
+    .mock-bottom {
+      padding: 16px;
+      border-radius: 28px;
+      background: rgba(0,0,0,.22);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(12px);
+      color: rgba(255,255,255,.84);
+      line-height: 1.55;
+      font-weight: 850;
+    }
+
+    .orbit-card {
+      position: absolute;
+      border-radius: 26px;
+      padding: 18px;
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.18);
+      box-shadow: 0 20px 60px rgba(0,0,0,.24);
+      backdrop-filter: blur(18px);
+      animation: drift 5s ease-in-out infinite;
+    }
+
+    .orbit-card strong { display: block; font-size: 28px; }
+    .orbit-card span { color: rgba(255,255,255,.72); font-size: 13px; font-weight: 850; }
+    .oc-1 { left: 0; top: 110px; animation-delay: -.7s; }
+    .oc-2 { right: 8px; bottom: 118px; animation-delay: -1.4s; }
+    .oc-3 { left: 42px; bottom: 38px; animation-delay: -2.2s; }
+
+    @keyframes drift {
+      0%, 100% { transform: translateY(0) rotate(-2deg); }
+      50% { transform: translateY(-16px) rotate(2deg); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section-head { text-align: center; max-width: 780px; margin: 0 auto 42px; }
+    .kicker { color: var(--gold); font-size: 13px; text-transform: uppercase; letter-spacing: .18em; font-weight: 950; margin-bottom: 12px; }
+    .title { font-size: clamp(34px, 5vw, 62px); line-height: 1.04; letter-spacing: -.055em; margin-bottom: 16px; }
+    .note { color: rgba(255,255,255,.72); font-size: 18px; line-height: 1.75; }
+
+    .glass {
+      background: linear-gradient(135deg, rgba(255,255,255,.13), rgba(255,255,255,.07));
+      border: 1px solid rgba(255,255,255,.17);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(22px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .stat-card {
+      padding: 24px;
+      text-align: center;
+      min-height: 150px;
+      display: grid;
+      place-items: center;
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: clamp(34px, 5vw, 56px);
+      line-height: 1;
+      color: transparent;
+      background: linear-gradient(135deg, #fff, var(--pink), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .stat-card span { color: rgba(255,255,255,.72); font-weight: 850; line-height: 1.4; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+
+    .feature-card {
+      position: relative;
+      overflow: hidden;
+      padding: 26px;
+      min-height: 236px;
+      transition: .25s ease;
+    }
+
+    .feature-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,.30); }
+    .feature-card::before {
+      content: "";
+      position: absolute;
+      inset: -80px auto auto -80px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,79,154,.26), transparent 70%);
+    }
+    .feature-icon { font-size: 36px; margin-bottom: 16px; position: relative; }
+    .feature-card h3 { font-size: 24px; line-height: 1.15; margin-bottom: 12px; letter-spacing: -.03em; position: relative; }
+    .feature-card p { color: rgba(255,255,255,.70); line-height: 1.75; position: relative; }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      counter-reset: step;
+    }
+
+    .step-card {
+      padding: 24px;
+      position: relative;
+      min-height: 230px;
+      overflow: hidden;
+    }
+
+    .step-card::before {
+      counter-increment: step;
+      content: "0" counter(step);
+      position: absolute;
+      right: 20px;
+      top: 16px;
+      font-size: 52px;
+      font-weight: 1000;
+      letter-spacing: -.07em;
+      color: rgba(255,255,255,.08);
+    }
+
+    .step-card .icon { font-size: 38px; margin-bottom: 16px; }
+    .step-card h3 { font-size: 22px; margin-bottom: 10px; letter-spacing: -.03em; }
+    .step-card p { color: rgba(255,255,255,.70); line-height: 1.7; }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .price-card {
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: .25s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price-card:hover { transform: translateY(-8px); }
+    .price-card.popular {
+      border-color: rgba(255,209,102,.50);
+      box-shadow: 0 28px 90px rgba(255,79,154,.26);
+    }
+
+    .popular-tag {
+      display: inline-flex;
+      width: fit-content;
+      padding: 9px 12px;
+      border-radius: 999px;
+      background: rgba(255,209,102,.16);
+      border: 1px solid rgba(255,209,102,.32);
+      color: #ffe7a3;
+      font-size: 12px;
+      font-weight: 950;
+      margin-bottom: 14px;
+    }
+
+    .price-card h3 {
+      font-size: 30px;
+      letter-spacing: -.04em;
+      margin-bottom: 10px;
+    }
+
+    .price {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .price strong {
+      font-size: 54px;
+      line-height: 1;
+      letter-spacing: -.07em;
+      color: transparent;
+      background: linear-gradient(135deg, #fff, var(--pink), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .price span { color: rgba(255,255,255,.65); padding-bottom: 7px; font-weight: 850; }
+
+    .includes {
+      list-style: none;
+      display: grid;
+      gap: 11px;
+      margin: 8px 0 22px;
+      flex: 1;
+    }
+
+    .includes li {
+      display: flex;
+      gap: 10px;
+      color: rgba(255,255,255,.76);
+      line-height: 1.55;
+      font-weight: 760;
+    }
+
+    .includes li::before {
+      content: "✓";
+      width: 22px;
+      height: 22px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      background: rgba(37,211,102,.18);
+      color: var(--mint);
+      flex: 0 0 auto;
+      font-weight: 950;
+    }
+
+    .samples {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .sample-preview {
+      padding: 24px;
+      min-height: 420px;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+    }
+
+    .mini-site {
+      width: min(420px, 100%);
+      min-height: 340px;
+      border-radius: 34px;
+      padding: 22px;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(255,255,255,.25), transparent 22%),
+        linear-gradient(135deg, #ff78b4, #8f63ff 48%, #ffd166);
+      box-shadow: 0 30px 90px rgba(0,0,0,.28);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .mini-site::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(transparent 40%, rgba(0,0,0,.55));
+      z-index: 1;
+    }
+
+    .mini-site > * { position: relative; z-index: 2; }
+    .mini-site h3 { font-size: 44px; line-height: .98; letter-spacing: -.06em; }
+    .mini-site p { color: rgba(255,255,255,.82); line-height: 1.55; font-weight: 850; }
+    .mini-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .mini-badge { padding: 8px 10px; border-radius: 999px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.18); font-size: 12px; font-weight: 950; }
+
+    .sample-list {
+      padding: 26px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .sample-row {
+      padding: 16px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.12);
+      cursor: pointer;
+      transition: .22s ease;
+    }
+
+    .sample-row:hover, .sample-row.active {
+      transform: translateX(6px);
+      background: rgba(255,255,255,.14);
+      border-color: rgba(255,255,255,.24);
+    }
+
+    .sample-row h3 { font-size: 20px; margin-bottom: 6px; }
+    .sample-row p { color: rgba(255,255,255,.68); line-height: 1.55; }
+
+    .addons-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .addon-card {
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.13);
+      min-height: 138px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .addon-card strong { font-size: 26px; }
+    .addon-card h3 { font-size: 18px; line-height: 1.25; }
+    .addon-card p { color: rgba(255,255,255,.68); line-height: 1.45; font-size: 14px; }
+
+
+    .custom-offer {
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .custom-highlight {
+      padding: clamp(26px, 4vw, 44px);
+      position: relative;
+      overflow: hidden;
+      min-height: 420px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .custom-highlight::before {
+      content: "";
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      right: -170px;
+      top: -170px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,209,102,.22), transparent 70%);
+    }
+
+    .custom-highlight > * { position: relative; z-index: 1; }
+    .custom-highlight h3 { font-size: clamp(36px, 5vw, 62px); line-height: .98; letter-spacing: -.06em; margin-bottom: 16px; }
+    .custom-highlight p { color: rgba(255,255,255,.76); line-height: 1.8; font-size: 18px; margin-bottom: 18px; }
+
+    .custom-price {
+      display: inline-flex;
+      align-items: flex-end;
+      gap: 10px;
+      margin: 8px 0 24px;
+    }
+
+    .custom-price strong {
+      font-size: clamp(44px, 6vw, 72px);
+      line-height: .9;
+      letter-spacing: -.07em;
+      color: transparent;
+      background: linear-gradient(135deg, #fff, var(--gold), var(--pink));
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+
+    .custom-price span { color: rgba(255,255,255,.68); font-weight: 900; padding-bottom: 8px; }
+
+    .custom-includes {
+      display: grid;
+      gap: 12px;
+    }
+
+    .custom-row {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+      padding: 17px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.13);
+      transition: .22s ease;
+    }
+
+    .custom-row:hover { transform: translateX(6px); background: rgba(255,255,255,.13); }
+    .custom-row .icon { font-size: 24px; flex: 0 0 auto; }
+    .custom-row h4 { font-size: 18px; margin-bottom: 5px; }
+    .custom-row p { color: rgba(255,255,255,.68); line-height: 1.55; }
+
+    .occasion-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .occasion-card {
+      min-height: 152px;
+      padding: 20px;
+      border-radius: 26px;
+      background: rgba(255,255,255,.09);
+      border: 1px solid rgba(255,255,255,.13);
+      position: relative;
+      overflow: hidden;
+      transition: .22s ease;
+    }
+
+    .occasion-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,.26); }
+    .occasion-card::before {
+      content: "";
+      position: absolute;
+      inset: -70px auto auto -70px;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,79,154,.23), transparent 70%);
+    }
+    .occasion-card strong { position: relative; display: block; font-size: 34px; margin-bottom: 14px; }
+    .occasion-card h3 { position: relative; font-size: 19px; line-height: 1.25; margin-bottom: 7px; }
+    .occasion-card p { position: relative; color: rgba(255,255,255,.68); line-height: 1.5; font-size: 14px; }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .demo-card {
+      overflow: hidden;
+      transition: .25s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .demo-card:hover { transform: translateY(-8px); border-color: rgba(255,255,255,.30); }
+
+    .demo-thumb {
+      min-height: 240px;
+      border-radius: 28px;
+      margin: 16px;
+      margin-bottom: 0;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(135deg, #ff78b4, #8f63ff 48%, #ffd166);
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(255,255,255,.16);
+    }
+
+    .demo-thumb img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      display: none;
+    }
+
+    .demo-thumb.has-image img { display: block; }
+    .demo-thumb::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(transparent 35%, rgba(0,0,0,.68));
+    }
+
+    .demo-placeholder {
+      position: relative;
+      z-index: 3;
+      display: grid;
+      gap: 10px;
+      place-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .demo-placeholder strong { font-size: 42px; }
+    .demo-placeholder span { color: rgba(255,255,255,.82); font-weight: 900; }
+
+    .demo-thumb-title {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      bottom: 16px;
+      z-index: 4;
+    }
+
+    .demo-thumb-title h3 { font-size: 24px; line-height: 1.1; margin-bottom: 8px; }
+    .demo-badges { display: flex; gap: 7px; flex-wrap: wrap; }
+    .demo-badge { padding: 7px 9px; border-radius: 999px; background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.18); font-size: 11px; font-weight: 950; }
+
+    .demo-body { padding: 18px 20px 22px; display: grid; gap: 12px; flex: 1; }
+    .demo-body p { color: rgba(255,255,255,.70); line-height: 1.65; }
+    .demo-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: auto; }
+    .demo-actions .btn { min-height: 44px; padding: 11px 15px; font-size: 14px; }
+
+    .demo-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 700;
+      display: none;
+      place-items: center;
+      padding: 18px;
+      background: rgba(7,3,10,.78);
+      backdrop-filter: blur(14px);
+    }
+
+    .demo-modal.show { display: grid; }
+    body.modal-open { overflow: hidden; }
+
+    .demo-modal-card {
+      width: min(1080px, 100%);
+      max-height: min(88vh, 920px);
+      overflow: auto;
+      border-radius: 36px;
+      padding: clamp(18px, 3vw, 30px);
+      animation: popIn .28s ease both;
+      position: relative;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(.96) translateY(14px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .demo-modal-grid {
+      display: grid;
+      grid-template-columns: .92fr 1.08fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+
+    .demo-full-preview {
+      min-height: 620px;
+      border-radius: 34px;
+      overflow: hidden;
+      position: relative;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #ff78b4, #8f63ff 48%, #ffd166);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .demo-full-preview img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+      z-index: 1;
+    }
+
+    .demo-full-preview.has-image img { display: block; }
+    .demo-full-preview::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: linear-gradient(rgba(20,8,28,.18), rgba(20,8,28,.18) 35%, rgba(0,0,0,.70));
+    }
+
+    .demo-full-preview > * { position: relative; z-index: 3; }
+    .demo-topbar { display: flex; justify-content: space-between; gap: 10px; align-items: center; font-weight: 950; }
+    .demo-full-preview h2 { font-size: clamp(40px, 6vw, 76px); line-height: .96; letter-spacing: -.07em; margin: 18px 0 14px; }
+    .demo-full-preview p { color: rgba(255,255,255,.86); line-height: 1.7; font-size: 18px; font-weight: 800; }
+
+    .demo-mini-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .demo-mini-gallery span {
+      min-height: 86px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.18);
+      border: 1px solid rgba(255,255,255,.18);
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+    }
+
+    .demo-info { padding: 6px 4px; }
+    .demo-info h3 { font-size: clamp(32px, 4vw, 52px); line-height: 1.02; letter-spacing: -.055em; margin-bottom: 14px; }
+    .demo-info p { color: rgba(255,255,255,.74); line-height: 1.75; margin-bottom: 18px; }
+    .demo-feature-list { display: grid; gap: 11px; margin: 18px 0 22px; }
+    .demo-feature-list li { list-style: none; color: rgba(255,255,255,.78); display: flex; gap: 10px; line-height: 1.5; font-weight: 760; }
+    .demo-feature-list li::before { content: "✓"; color: var(--mint); font-weight: 950; }
+
+    .close-demo {
+      position: absolute;
+      right: 18px;
+      top: 18px;
+      z-index: 5;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.18);
+      background: rgba(255,255,255,.12);
+      color: white;
+      cursor: pointer;
+      font-size: 22px;
+      font-weight: 950;
+    }
+
+    .faq-grid {
+      display: grid;
+      gap: 12px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    details {
+      padding: 20px 22px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    summary {
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 950;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker { display: none; }
+    details p { color: rgba(255,255,255,.72); line-height: 1.75; margin-top: 12px; }
+
+    .finale {
+      min-height: 78vh;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .finale-card {
+      padding: clamp(34px, 6vw, 70px);
+      border-radius: 44px;
+      max-width: 980px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .finale-card::before {
+      content: "";
+      position: absolute;
+      inset: -100px;
+      background: conic-gradient(from 180deg, transparent, rgba(255,79,154,.18), transparent, rgba(255,209,102,.16), transparent);
+      animation: rotateBg 10s linear infinite;
+    }
+
+    .finale-content { position: relative; z-index: 1; }
+    @keyframes rotateBg { to { transform: rotate(360deg); } }
+    .finale h2 { font-size: clamp(42px, 8vw, 96px); line-height: .96; letter-spacing: -.08em; margin-bottom: 20px; }
+    .finale p { color: rgba(255,255,255,.78); line-height: 1.8; font-size: clamp(18px, 2.4vw, 25px); max-width: 780px; margin: 0 auto 28px; }
+
+    .sticky-whatsapp {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 90;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--green), #10ad55);
+      color: white;
+      text-decoration: none;
+      font-size: 27px;
+      box-shadow: 0 18px 42px rgba(37,211,102,.32);
+      border: 1px solid rgba(255,255,255,.28);
+      animation: pulseWA 1.7s ease-in-out infinite;
+    }
+
+    @keyframes pulseWA {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+    }
+
+    footer { padding: 36px 0 70px; color: rgba(255,255,255,.62); text-align: center; font-weight: 850; }
+
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: .7s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    @media (max-width: 980px) {
+      .hero-grid, .samples, .custom-offer, .demo-modal-grid { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 560px; }
+      .phone-card { left: 50%; right: auto; transform: translateX(-50%) rotate(2deg); }
+      .stats-grid, .steps, .addons-grid, .occasion-grid, .demo-grid { grid-template-columns: repeat(2, 1fr); }
+      .grid-3, .pricing-grid { grid-template-columns: 1fr; }
+      .demo-full-preview { min-height: 520px; }
+    }
+
+    @media (max-width: 680px) {
+      .nav { top: 10px; border-radius: 22px; align-items: stretch; }
+      .brand span { display: none; }
+      .nav-order { padding: 10px 12px; font-size: 13px; }
+      section { padding: 72px 0; }
+      .hero { padding-top: 86px; }
+      .hero-copy { padding: 24px; border-radius: 32px; }
+      .hero-visual { min-height: 500px; }
+      .phone-card { width: min(360px, 96%); }
+      .orbit-card { padding: 13px; }
+      .oc-1 { top: 44px; }
+      .oc-2 { bottom: 94px; right: 0; }
+      .oc-3 { bottom: 16px; left: 0; }
+      .stats-grid, .steps, .grid-2, .addons-grid, .occasion-grid, .demo-grid { grid-template-columns: 1fr; }
+      .custom-highlight { min-height: auto; }
+      .demo-thumb { min-height: 220px; }
+      .demo-full-preview { min-height: 480px; }
+      .cursor-glow { display: none; }
+      .sticky-whatsapp { width: 54px; height: 54px; right: 14px; bottom: 14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="confettiCanvas"></canvas>
+  <div class="noise"></div>
+  <div class="cursor-glow" id="cursorGlow"></div>
+  <div class="floating-layer" id="floatingLayer"></div>
+
+  <div class="preloader" id="preloader">
+    <div class="loader-card">
+      <div class="loader-heart">💖</div>
+      <h2>Creating a surprise universe...</h2>
+      <p>Birthday, anniversary, love, apology — shob special moment-er jonno private wish webpage.</p>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="brand"><div class="brand-mark">❤</div><span>WishLink BD</span></div>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#features">Features</a>
+      <a href="#process">Process</a>
+      <a href="#pricing">Packages</a>
+      <a href="#custom-design">Custom</a>
+      <a href="#occasions">Occasions</a>
+      <a href="#demo-themes">Demos</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <a class="nav-order whatsapp-link" href="#" target="_blank" rel="noopener">Order Now</a>
+  </nav>
+
+  <main class="page">
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">🎁 Personalized surprise wish webpage</div>
+          <h1><span class="gradient-text">Send love with a private surprise link.</span></h1>
+          <p class="hero-subtitle">
+            Birthday, anniversary, Valentine, sorry message, best friend wish — photo, message, music, QR code ar beautiful animation diye ekta premium webpage banai. Link ta WhatsApp/Messenger-e share korlei surprise ready.
+          </p>
+          <div class="hero-actions">
+            <a class="btn whatsapp whatsapp-link" href="#" target="_blank" rel="noopener">Order on WhatsApp 💬</a>
+            <a class="btn secondary" href="#pricing">See Packages ✨</a>
+            <button class="btn secondary" onclick="fireConfetti()">Preview Magic 🎉</button>
+          </div>
+        </div>
+
+        <div class="hero-visual" aria-label="Service preview">
+          <div class="phone-card">
+            <div class="phone-screen">
+              <div class="mock-top">
+                <span>9:41</span>
+                <span class="mock-pill">Private Link 🔒</span>
+              </div>
+              <div class="mock-content">
+                <div class="mock-heart">💝</div>
+                <h2>Happy Birthday<br><span class="gradient-text">My Queen</span></h2>
+                <p>Photos, love letter, music, timeline, wishes & surprise animation — shob ek page-e.</p>
+                <div class="mock-gallery">
+                  <div class="mock-photo">📸</div>
+                  <div class="mock-photo">🎵</div>
+                  <div class="mock-photo">💌</div>
+                </div>
+              </div>
+              <div class="mock-bottom">“Eta website na, eta holo emotion-filled surprise gift.”</div>
+            </div>
+          </div>
+          <div class="orbit-card oc-1"><strong>5 min</strong><span>Fast Order</span></div>
+          <div class="orbit-card oc-2"><strong>QR</strong><span>Gift Card Ready</span></div>
+          <div class="orbit-card oc-3"><strong>৳199</strong><span>Starts From</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="stats">
+      <div class="container">
+        <div class="stats-grid reveal">
+          <div class="stat-card glass"><div><strong>01</strong><span>Private Shareable Link</span></div></div>
+          <div class="stat-card glass"><div><strong>12+</strong><span>Photos & Memories</span></div></div>
+          <div class="stat-card glass"><div><strong>🎵</strong><span>Romantic Background Music</span></div></div>
+          <div class="stat-card glass"><div><strong>QR</strong><span>Printable QR Surprise</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">What You Get</div>
+          <h2 class="title">Ekta page, onek emotion.</h2>
+          <p class="note">Customer-er photo, message ar occasion niye amra ekta beautiful mobile-friendly surprise webpage banai.</p>
+        </div>
+        <div class="grid-3 reveal">
+          <article class="feature-card glass">
+            <div class="feature-icon">📸</div>
+            <h3>Photo Gallery</h3>
+            <p>Favorite photos diye premium gallery, caption, memory card ar smooth animation.</p>
+          </article>
+          <article class="feature-card glass">
+            <div class="feature-icon">💌</div>
+            <h3>Custom Love Letter</h3>
+            <p>Bangla, English ba Banglish wish message. Chaile amra message write kore dibo.</p>
+          </article>
+          <article class="feature-card glass">
+            <div class="feature-icon">🎵</div>
+            <h3>Background Music</h3>
+            <p>Romantic music, birthday vibe, soft piano ba customer-er selected song add kora jabe.</p>
+          </article>
+          <article class="feature-card glass">
+            <div class="feature-icon">🔐</div>
+            <h3>Private Link / PIN</h3>
+            <p>Only jar kache link thakbe shei dekhte parbe. Premium package-e PIN lock possible.</p>
+          </article>
+          <article class="feature-card glass">
+            <div class="feature-icon">🎉</div>
+            <h3>Confetti & Effects</h3>
+            <p>Hearts, confetti, floating animation, reveal effect — surprise moment aro premium lage.</p>
+          </article>
+          <article class="feature-card glass">
+            <div class="feature-icon">📱</div>
+            <h3>Mobile First</h3>
+            <p>WhatsApp, Messenger, Facebook, SMS — jekono jaygay link share korar moto responsive design.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">How It Works</div>
+          <h2 class="title">Order kora ekdom easy.</h2>
+          <p class="note">Just WhatsApp-e message dao. Amra requirement niye webpage ready kore link deliver korbo.</p>
+        </div>
+        <div class="steps reveal">
+          <div class="step-card glass">
+            <div class="icon">💬</div>
+            <h3>WhatsApp-e Order</h3>
+            <p>Package choose kore WhatsApp-e message dao.</p>
+          </div>
+          <div class="step-card glass">
+            <div class="icon">📤</div>
+            <h3>Content Send</h3>
+            <p>Name, occasion, photos, message, song preference send koro.</p>
+          </div>
+          <div class="step-card glass">
+            <div class="icon">🪄</div>
+            <h3>We Create</h3>
+            <p>Amra premium surprise page design kore preview ready korbo.</p>
+          </div>
+          <div class="step-card glass">
+            <div class="icon">🔗</div>
+            <h3>Share the Link</h3>
+            <p>Final link/QR peye gift receiver-ke surprise dao.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Packages</div>
+          <h2 class="title">Choose your surprise package.</h2>
+          <p class="note">Partner/reseller/agency plan nai — sudhu direct customer service package.</p>
+        </div>
+        <div class="pricing-grid reveal">
+          <article class="price-card glass">
+            <span class="popular-tag">Starter Gift</span>
+            <h3>Lite</h3>
+            <div class="price"><strong>৳199</strong><span>/ page</span></div>
+            <ul class="includes">
+              <li>1 ready-made template</li>
+              <li>6 photos</li>
+              <li>Short wish message</li>
+              <li>1 background music vibe</li>
+              <li>Private shareable link</li>
+              <li>Delivery: basic queue</li>
+            </ul>
+            <a class="btn whatsapp order-package" href="#" target="_blank" rel="noopener" data-package="Lite Package - ৳199">Order Lite 💬</a>
+          </article>
+
+          <article class="price-card glass popular">
+            <span class="popular-tag">Most Popular</span>
+            <h3>Standard</h3>
+            <div class="price"><strong>৳399</strong><span>/ page</span></div>
+            <ul class="includes">
+              <li>Premium template selection</li>
+              <li>Up to 12 photos</li>
+              <li>Long message / love letter</li>
+              <li>Music + confetti + hearts</li>
+              <li>QR code included</li>
+              <li>Bangla / English / Banglish support</li>
+            </ul>
+            <a class="btn whatsapp order-package" href="#" target="_blank" rel="noopener" data-package="Standard Package - ৳399">Order Standard 💬</a>
+          </article>
+
+          <article class="price-card glass">
+            <span class="popular-tag">Premium Surprise</span>
+            <h3>Premium</h3>
+            <div class="price"><strong>৳799</strong><span>/ page</span></div>
+            <ul class="includes">
+              <li>Everything in Standard</li>
+              <li>Voice note section</li>
+              <li>Short video section</li>
+              <li>Password/PIN lock</li>
+              <li>Midnight reveal style</li>
+              <li>No-branding premium finish</li>
+            </ul>
+            <a class="btn whatsapp order-package" href="#" target="_blank" rel="noopener" data-package="Premium Package - ৳799">Order Premium 💬</a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="custom-design">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">High Profit Offer</div>
+          <h2 class="title">Custom Design package.</h2>
+          <p class="note">Jara nijera content arrange korte chay na, tader jonno full done-for-you premium service.</p>
+        </div>
+        <div class="custom-offer reveal">
+          <div class="custom-highlight glass">
+            <div>
+              <span class="popular-tag">Done For You</span>
+              <h3>Custom Design</h3>
+              <div class="custom-price"><strong>৳1,999–৳4,999</strong><span>/ project</span></div>
+              <p>Customer sudhu photo, name, occasion ar basic idea dibe. Amra premium layout, romantic/creative copywriting, music selection, animation/effects diye complete surprise webpage ready kore dibo.</p>
+            </div>
+            <div class="hero-actions">
+              <a class="btn whatsapp order-package" href="#" target="_blank" rel="noopener" data-package="Custom Design - ৳1,999–৳4,999">Order Custom Design 💬</a>
+              <a class="btn secondary" href="#demo-themes">See Demo Themes ✨</a>
+            </div>
+          </div>
+          <div class="custom-includes">
+            <div class="custom-row"><div class="icon">🎨</div><div><h4>Premium custom design</h4><p>Customer-er story, occasion ar relation onujayi unique color, layout, section design.</p></div></div>
+            <div class="custom-row"><div class="icon">📸</div><div><h4>Photo arrangement</h4><p>Best photo selection, gallery order, captions and memory flow setup.</p></div></div>
+            <div class="custom-row"><div class="icon">✍️</div><div><h4>Romantic / creative copywriting</h4><p>Bangla, English ba Banglish-e emotional wish, love letter, apology, caption writing.</p></div></div>
+            <div class="custom-row"><div class="icon">🎵</div><div><h4>Music selection</h4><p>Occasion-er mood onujayi romantic, birthday, soft piano ba customer-selected song vibe.</p></div></div>
+            <div class="custom-row"><div class="icon">⚡</div><div><h4>Delivery within few hours</h4><p>Content ready thakle quick delivery possible. Urgent order WhatsApp-e confirm kora jabe.</p></div></div>
+            <div class="custom-row"><div class="icon">✨</div><div><h4>Special animation/effects</h4><p>Confetti, floating hearts, reveal effect, popup secret message, QR card style.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="occasions">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Occasion Based Service</div>
+          <h2 class="title">Sudhu birthday na — every special day.</h2>
+          <p class="note">Customer-er occasion select korlei design, text, music and animation oi vibe onujayi customize kora jabe.</p>
+        </div>
+        <div class="occasion-grid reveal">
+          <article class="occasion-card"><strong>🎂</strong><h3>Birthday Surprise Page</h3><p>Photo, music, wishes, confetti and private birthday link.</p></article>
+          <article class="occasion-card"><strong>💍</strong><h3>Anniversary Love Page</h3><p>Our story timeline, love letter, favorite memories.</p></article>
+          <article class="occasion-card"><strong>🌹</strong><h3>Valentine’s Day Page</h3><p>Rose theme, secret message, romantic animation.</p></article>
+          <article class="occasion-card"><strong>🌸</strong><h3>Pohela Falgun Romantic Page</h3><p>Falgun color, flower vibe, sweet couple message.</p></article>
+          <article class="occasion-card"><strong>🎊</strong><h3>Pohela Boishakh Wish Page</h3><p>Bangla new year wish with festive design.</p></article>
+          <article class="occasion-card"><strong>🌙</strong><h3>Eid Wish Page</h3><p>Family/friend Eid greeting, dua and celebration vibe.</p></article>
+          <article class="occasion-card"><strong>🥺</strong><h3>Sorry / Apology Page</h3><p>Soft design, emotional letter and cute forgive-me style.</p></article>
+          <article class="occasion-card"><strong>🫶</strong><h3>Best Friend Birthday</h3><p>Fun memories, inside jokes, friendship notes.</p></article>
+          <article class="occasion-card"><strong>👩‍👧</strong><h3>Mother’s / Father’s Day</h3><p>Respect, love, gratitude message with family photos.</p></article>
+          <article class="occasion-card"><strong>🎓</strong><h3>Graduation Wish Page</h3><p>Achievement celebration, proud message and photos.</p></article>
+          <article class="occasion-card"><strong>👶</strong><h3>Baby Birthday Page</h3><p>First birthday or baby milestone memory page.</p></article>
+          <article class="occasion-card"><strong>💌</strong><h3>Custom Any Occasion</h3><p>Unique event hole WhatsApp-e idea dile custom page possible.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="addons">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Add-ons</div>
+          <h2 class="title">Chaile aro special koro.</h2>
+          <p class="note">Package-er sathe extra features add kora jabe.</p>
+        </div>
+        <div class="addons-grid reveal">
+          <div class="addon-card"><strong>+৳49</strong><h3>Extra Photo Pack</h3><p>More memories add korar jonno.</p></div>
+          <div class="addon-card"><strong>+৳99</strong><h3>Voice Note</h3><p>Personal voice message section.</p></div>
+          <div class="addon-card"><strong>+৳149</strong><h3>Video Section</h3><p>Short video/memory clip add.</p></div>
+          <div class="addon-card"><strong>+৳79</strong><h3>Midnight Reveal</h3><p>12 AM surprise style setup.</p></div>
+          <div class="addon-card"><strong>+৳49</strong><h3>Wish Writing</h3><p>Bangla/Banglish message writing help.</p></div>
+          <div class="addon-card"><strong>+৳99</strong><h3>Premium Style</h3><p>More animation & premium look.</p></div>
+          <div class="addon-card"><strong>+৳99</strong><h3>Custom URL Name</h3><p>Personalized page link slug.</p></div>
+          <div class="addon-card"><strong>+৳149</strong><h3>Printable QR Card</h3><p>Gift-er sathe QR card design.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="demo-themes">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">Demo Theme Gallery</div>
+          <h2 class="title">5/6 ta demo sample dekhar jaiga.</h2>
+          <p class="note">Demo card-e image placeholder ache. Chobi set korle thumbnail show hobe. Card click korle ei same page-er moddhei full popup preview open hobe.</p>
+        </div>
+        <div class="demo-grid reveal" id="demoGrid"></div>
+      </div>
+    </section>
+
+    <section id="faq">
+      <div class="container">
+        <div class="section-head reveal">
+          <div class="kicker">FAQ</div>
+          <h2 class="title">Common questions.</h2>
+        </div>
+        <div class="faq-grid reveal">
+          <details open>
+            <summary>Page ta ki mobile-e open hobe?</summary>
+            <p>Haan. Design mobile-first, tai WhatsApp/Messenger/Facebook/SMS link theke easily open hobe.</p>
+          </details>
+          <details>
+            <summary>Order dite ki ki lagbe?</summary>
+            <p>Recipient name, occasion, photos, wish message, preferred music/song, package/theme name, and delivery time. Custom Design order hole idea/relationship story dile aro premium kora jabe.</p>
+          </details>
+          <details>
+            <summary>Payment kivabe hobe?</summary>
+            <p>WhatsApp-e order confirm korar por payment instruction deya hobe. Tumi bKash/Nagad/card/manual method use korte paro.</p>
+          </details>
+          <details>
+            <summary>Photo na thakle ki page banano jabe?</summary>
+            <p>Jabe. Photo charao message, animation, music, name, wish card, countdown diye page banano possible.</p>
+          </details>
+          <details>
+            <summary>Private link ki public hoye jabe?</summary>
+            <p>Na. Link only jar kache share korba shei dekhte parbe. Premium package-e PIN/password option add kora jabe.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="finale" class="finale">
+      <div class="container">
+        <div class="finale-card glass reveal">
+          <div class="finale-content">
+            <div class="kicker">Ready to Surprise?</div>
+            <h2><span class="gradient-text">Make their day unforgettable.</span></h2>
+            <p>Ekta simple WhatsApp message diye order start koro. Amra tomar idea ke beautiful surprise webpage-e convert kore dibo.</p>
+            <div class="hero-actions" style="justify-content:center">
+              <a class="btn whatsapp whatsapp-link" href="#" target="_blank" rel="noopener">Order Now on WhatsApp 💬</a>
+              <a class="btn secondary" href="#demo-themes">See Demo Themes ✨</a>
+              <button class="btn secondary" onclick="fireConfetti(260)">See Magic 🎉</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a class="sticky-whatsapp whatsapp-link" href="#" target="_blank" rel="noopener" aria-label="Order on WhatsApp">💬</a>
+
+  <footer>
+    Personalized Surprise Wish Webpage Service — Birthday • Anniversary • Love • Apology • Special Day ❤️
+  </footer>
+
+  <div class="demo-modal" id="demoModal" onclick="closeDemo(event)">
+    <div class="demo-modal-card glass" onclick="event.stopPropagation()">
+      <button class="close-demo" onclick="closeDemoButton()" aria-label="Close demo">×</button>
+      <div class="demo-modal-grid">
+        <div class="demo-full-preview" id="demoFullPreview">
+          <img id="demoFullImage" src="" alt="Demo theme image" />
+          <div class="demo-topbar">
+            <span id="demoModalOccasion">Birthday Demo</span>
+            <span class="mini-badge">Private Link 🔒</span>
+          </div>
+          <div>
+            <div class="demo-badges" id="demoModalBadges"></div>
+            <h2 id="demoModalTitle">Happy Birthday My Queen</h2>
+            <p id="demoModalText">Photo, love letter, music and surprise animation diye full page preview.</p>
+            <div class="demo-mini-gallery">
+              <span>📸</span><span>💌</span><span>🎵</span>
+            </div>
+          </div>
+        </div>
+        <div class="demo-info">
+          <span class="popular-tag" id="demoModalPrice">Sample Theme</span>
+          <h3 id="demoInfoTitle">Full demo preview</h3>
+          <p id="demoInfoDesc">Ei popup-er moddhe customer bujhbe je final page-er vibe kemon hobe. Real image add korte JS demoThemes array-te image file name boshaile hobe.</p>
+          <ul class="demo-feature-list" id="demoFeatureList"></ul>
+          <div class="hero-actions">
+            <a class="btn whatsapp" id="demoOrderBtn" href="#" target="_blank" rel="noopener">Order This Theme 💬</a>
+            <button class="btn secondary" onclick="fireConfetti(180)">Preview Effect 🎉</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /*
+      ============================================================
+      EASY CONFIG
+      ============================================================
+      1) whatsappNumber e tomar WhatsApp number dao.
+         Example: "8801712345678"  (plus sign, space, dash chara)
+      2) brandName, pricing, text chaile change korte paro.
+    */
+
+    const CONFIG = {
+      brandName: "WishLink BD",
+      whatsappNumber: "8801XXXXXXXXX",
+      defaultMessage: "Assalamu Alaikum, ami ekta personalized surprise wish webpage order korte chai.",
+      autoConfetti: true
+    };
+
+    const demoThemes = [
+      {
+        title: "Birthday Queen Theme",
+        occasion: "Birthday Surprise",
+        price: "৳399+",
+        image: "", // Example: "demo-birthday.jpg"
+        emoji: "🎂",
+        background: "linear-gradient(135deg, #ff78b4, #8f63ff 48%, #ffd166)",
+        tags: ["Photos", "Music", "Confetti"],
+        short: "Wife, husband, girlfriend, boyfriend ba friend-er birthday-r jonno romantic/fun surprise page.",
+        text: "Happy Birthday My Queen — photo gallery, love letter, music, confetti and secret message with private link.",
+        features: ["Hero birthday wish section", "Photo gallery with captions", "Background music vibe", "Secret message popup", "WhatsApp share-ready private link"]
+      },
+      {
+        title: "Anniversary Love Story",
+        occasion: "Anniversary",
+        price: "৳399+",
+        image: "", // Example: "demo-anniversary.jpg"
+        emoji: "💍",
+        background: "linear-gradient(135deg, #9b5cff, #ff4f9a 52%, #66ffd1)",
+        tags: ["Timeline", "Love Letter", "Couple"],
+        short: "Couple-er memory, first meet, wedding, promise and favorite photos niye emotional page.",
+        text: "Our Beautiful Story — timeline, memory cards, love letter and forever promise section.",
+        features: ["Our story timeline", "Long romantic letter", "Couple photo gallery", "Promise cards", "Premium rose/purple theme"]
+      },
+      {
+        title: "Valentine / Falgun Rose",
+        occasion: "Valentine & Falgun",
+        price: "৳399+",
+        image: "", // Example: "demo-valentine.jpg"
+        emoji: "🌹",
+        background: "linear-gradient(135deg, #ff2f7e, #9b5cff 48%, #ffb3d4)",
+        tags: ["Rose", "Secret", "Romantic"],
+        short: "Valentine, Pohela Falgun ba romantic proposal-er jonno rose style private page.",
+        text: "A Secret Love Page — rose vibe, floating hearts, private note and romantic reveal.",
+        features: ["Rose romantic design", "Secret love message", "Floating heart animation", "Soft music section", "Custom love quote"]
+      },
+      {
+        title: "Sorry Apology Theme",
+        occasion: "Sorry / Apology",
+        price: "৳399+",
+        image: "", // Example: "demo-sorry.jpg"
+        emoji: "🥺",
+        background: "linear-gradient(135deg, #6d3df2, #ff7ab6 50%, #ffd166)",
+        tags: ["Soft", "Letter", "Forgive"],
+        short: "Forgive-me message, soft color, emotional letter and sweet memory diye apology page.",
+        text: "I Am Sorry, Please Smile — heartfelt apology letter, memories and promise section.",
+        features: ["Soft apology copywriting", "Memory repair section", "Cute promise cards", "Calm background vibe", "One-click WhatsApp order"]
+      },
+      {
+        title: "Best Friend Fun Theme",
+        occasion: "Best Friend Birthday",
+        price: "৳399+",
+        image: "", // Example: "demo-friend.jpg"
+        emoji: "🫶",
+        background: "linear-gradient(135deg, #66ffd1, #9b5cff 52%, #ffd166)",
+        tags: ["Fun", "Memories", "Friendship"],
+        short: "Best friend-er birthday-te funny memory, inside joke and friendship wish diye page.",
+        text: "Best Friend Forever — fun photos, joke cards, friendship notes and colorful effects.",
+        features: ["Funny memory cards", "Inside joke section", "Friendship reasons", "Colorful confetti", "Shareable surprise link"]
+      },
+      {
+        title: "Eid / Boishakh Greeting",
+        occasion: "Festival Wish",
+        price: "৳399+",
+        image: "", // Example: "demo-festival.jpg"
+        emoji: "🌙",
+        background: "linear-gradient(135deg, #1fcf9a, #6d3df2 52%, #ffd166)",
+        tags: ["Family", "Dua", "Festival"],
+        short: "Eid, Pohela Boishakh, family greeting or cultural wish-er jonno festive page.",
+        text: "Warm Festival Wishes — dua, family photo, greeting cards and festive animation.",
+        features: ["Bangla/English greeting", "Family photo section", "Dua/message card", "Festival color theme", "QR share option"]
+      }
+    ];
+
+    const $ = selector => document.querySelector(selector);
+    const $$ = selector => document.querySelectorAll(selector);
+
+    window.addEventListener("load", () => {
+      setTimeout(() => $("#preloader").classList.add("hide"), 720);
+      document.title = `${CONFIG.brandName} | Birthday & Anniversary Webpage Service`;
+      renderWhatsAppLinks();
+      renderDemoThemes();
+      createFloatingItems();
+      initReveal();
+      initCursorGlow();
+      initNavSpy();
+      resizeCanvas();
+      if (CONFIG.autoConfetti) setTimeout(() => fireConfetti(), 1200);
+    });
+
+    function makeWhatsAppUrl(message) {
+      const text = encodeURIComponent(message || CONFIG.defaultMessage);
+      return `https://wa.me/${CONFIG.whatsappNumber}?text=${text}`;
+    }
+
+    function renderWhatsAppLinks() {
+      $$(".whatsapp-link").forEach(link => {
+        link.href = makeWhatsAppUrl(CONFIG.defaultMessage);
+      });
+
+      $$(".order-package").forEach(link => {
+        const packageName = link.dataset.package || "Package";
+        link.href = makeWhatsAppUrl(`${CONFIG.defaultMessage}\n\nPackage: ${packageName}\nOccasion: \nRecipient Name: \nDelivery Time: `);
+      });
+    }
+
+    function renderDemoThemes() {
+      const grid = $("#demoGrid");
+      if (!grid) return;
+      grid.innerHTML = demoThemes.map((theme, index) => `
+        <article class="demo-card glass" onclick="openDemo(${index})">
+          <div class="demo-thumb ${theme.image ? "has-image" : ""}" style="background:${theme.background}">
+            ${theme.image ? `<img src="${theme.image}" alt="${theme.title}" onerror="this.parentElement.classList.remove('has-image')">` : ""}
+            <div class="demo-placeholder"><strong>${theme.emoji}</strong><span>Image placeholder</span></div>
+            <div class="demo-thumb-title">
+              <h3>${theme.title}</h3>
+              <div class="demo-badges">${theme.tags.map(tag => `<span class="demo-badge">${tag}</span>`).join("")}</div>
+            </div>
+          </div>
+          <div class="demo-body">
+            <p>${theme.short}</p>
+            <div class="demo-actions">
+              <button class="btn secondary" type="button" onclick="event.stopPropagation(); openDemo(${index});">View Demo</button>
+              <a class="btn whatsapp" href="${makeWhatsAppUrl(`${CONFIG.defaultMessage}
+
+Theme: ${theme.title}
+Occasion: ${theme.occasion}`)}" target="_blank" rel="noopener" onclick="event.stopPropagation();">Order</a>
+            </div>
+          </div>
+        </article>
+      `).join("");
+    }
+
+    function openDemo(index) {
+      const theme = demoThemes[index];
+      if (!theme) return;
+      const preview = $("#demoFullPreview");
+      const image = $("#demoFullImage");
+
+      preview.style.background = theme.background;
+      preview.classList.toggle("has-image", Boolean(theme.image));
+      image.src = theme.image || "";
+      image.alt = theme.title;
+
+      $("#demoModalOccasion").textContent = theme.occasion;
+      $("#demoModalTitle").textContent = theme.title;
+      $("#demoModalText").textContent = theme.text;
+      $("#demoInfoTitle").textContent = `${theme.title} Preview`;
+      $("#demoInfoDesc").textContent = theme.short;
+      $("#demoModalPrice").textContent = `Demo Theme • ${theme.price}`;
+      $("#demoModalBadges").innerHTML = theme.tags.map(tag => `<span class="demo-badge">${tag}</span>`).join("");
+      $("#demoFeatureList").innerHTML = theme.features.map(item => `<li>${item}</li>`).join("");
+      $("#demoOrderBtn").href = makeWhatsAppUrl(`${CONFIG.defaultMessage}
+
+Theme: ${theme.title}
+Occasion: ${theme.occasion}
+Package: `);
+
+      $("#demoModal").classList.add("show");
+      document.body.classList.add("modal-open");
+      fireConfetti(90);
+    }
+
+    function closeDemo(event) {
+      if (!event || event.target.id === "demoModal") closeDemoButton();
+    }
+
+    function closeDemoButton() {
+      $("#demoModal").classList.remove("show");
+      document.body.classList.remove("modal-open");
+    }
+
+    window.addEventListener("keydown", event => {
+      if (event.key === "Escape") closeDemoButton();
+    });
+
+    function createFloatingItems() {
+      const symbols = ["❤️", "💖", "💕", "💗", "✨", "🌸", "🎀", "🎁"];
+      const layer = $("#floatingLayer");
+      for (let i = 0; i < 34; i++) {
+        const el = document.createElement("div");
+        el.className = "float-item";
+        el.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        el.style.left = Math.random() * 100 + "vw";
+        el.style.animationDuration = 8 + Math.random() * 9 + "s";
+        el.style.animationDelay = Math.random() * 9 + "s";
+        el.style.fontSize = 16 + Math.random() * 24 + "px";
+        layer.appendChild(el);
+      }
+    }
+
+    function initReveal() {
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add("show");
+        });
+      }, { threshold: .14 });
+      $$(".reveal").forEach(el => observer.observe(el));
+    }
+
+    function initCursorGlow() {
+      const glow = $("#cursorGlow");
+      window.addEventListener("pointermove", e => {
+        glow.style.left = e.clientX + "px";
+        glow.style.top = e.clientY + "px";
+      });
+    }
+
+    function initNavSpy() {
+      const links = Array.from($$(".nav-links a"));
+      const sections = links.map(link => document.querySelector(link.getAttribute("href"))).filter(Boolean);
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            links.forEach(link => link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`));
+          }
+        });
+      }, { rootMargin: "-45% 0px -50% 0px" });
+      sections.forEach(section => observer.observe(section));
+    }
+
+    /* ============================================================
+       CONFETTI ENGINE - no external library
+    ============================================================ */
+
+    const canvas = document.getElementById("confettiCanvas");
+    const ctx = canvas.getContext("2d");
+    let confetti = [];
+    let confettiAnimating = false;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resizeCanvas);
+
+    function fireConfetti(amount = 180) {
+      const colors = ["#ff4f9a", "#9b5cff", "#ffd166", "#66ffd1", "#ffffff", "#ff7ab6", "#25D366"];
+      for (let i = 0; i < amount; i++) {
+        confetti.push({
+          x: Math.random() * canvas.width,
+          y: -30 - Math.random() * canvas.height * .3,
+          size: 5 + Math.random() * 9,
+          speed: 2.2 + Math.random() * 5.2,
+          angle: Math.random() * Math.PI * 2,
+          spin: (Math.random() - .5) * .25,
+          drift: (Math.random() - .5) * 3,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          shape: Math.random() > .55 ? "circle" : "rect"
+        });
+      }
+      if (!confettiAnimating) animateConfetti();
+    }
+
+    function animateConfetti() {
+      confettiAnimating = true;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confetti.forEach(piece => {
+        piece.y += piece.speed;
+        piece.x += Math.sin(piece.angle) * 1.8 + piece.drift;
+        piece.angle += piece.spin;
+        ctx.save();
+        ctx.translate(piece.x, piece.y);
+        ctx.rotate(piece.angle);
+        ctx.fillStyle = piece.color;
+        if (piece.shape === "circle") {
+          ctx.beginPath();
+          ctx.arc(0, 0, piece.size * .55, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.fillRect(-piece.size / 2, -piece.size / 2, piece.size, piece.size * .62);
+        }
+        ctx.restore();
+      });
+      confetti = confetti.filter(piece => piece.y < canvas.height + 40);
+      if (confetti.length) requestAnimationFrame(animateConfetti);
+      else {
+        confettiAnimating = false;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+  </script>
+</body>
+</html>
